@@ -35,7 +35,7 @@ const RegisterPage = () => {
 
             const result = await response.json()
 
-            if(!response.ok){
+            if(response.status != 201){
                 throw new Error(result.msg || 'Registration Failed')
             }
 
