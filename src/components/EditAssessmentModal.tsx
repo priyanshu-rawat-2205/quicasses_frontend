@@ -2,65 +2,51 @@
 
 import { useState } from "react";
 import { FaTimes, FaPlus, FaTrash } from "react-icons/fa";
+import { useEffect } from "react";
 
 interface CreateAssessmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (data: any) => void;
+  assessmentId: string;
 }
 
 export default function CreateAssessmentModal({
   isOpen,
   onClose,
   onSubmit,
+  assessmentId
 }: CreateAssessmentModalProps) {
   const [title, setTitle] = useState("");
-  const [loading, setLoading] = useState(false)
-//   const [assessment, setAssessment] = useState(null);
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState<File | null>(null);
   const [questions, setQuestions] = useState([
     { title: "", options: ["", "", "", ""], correctOption: 0 },
   ]);
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    // if (event.target.files && event.target.files.length > 0) {
-    //   setFile(event.target.files[0]);
-    // }
-
-    if(event.target.files && event.target.files.length > 0) {
-        const selectedFile = event.target.files[0]
-        setFile(selectedFile)
-        setLoading(true)
-
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        try {
-            const response = await fetch('http://127.0.0.1:5000/api/file-upload/upload', {
-                method: 'POST',
-                body: formData,
-            })
-
-            if(!response.ok){
-                throw new Error('Failed to process file')
-            }
-
-            const data = await response.json()
-            setTitle(data.title || '')
-            setDescription(data.description || '')
-            setQuestions(data.question || [])
-        } catch(error) {
-            console.error('error uploading file', error);
-        } finally {
-            setLoading(false)
-        }
-
-    } else {
-        return
-    }
-  };
+  useEffect(() => {
+    const fetchAssessment = async () => {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/assessment/${assessmentId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+         if (!response.ok) {
+           throw new Error(response.statusText);
+         }
+          const data = await response.json();
+          setTitle(data.title);
+          setDescription(data.description);
+          setQuestions(data.questions);
+      } catch (error) {
+        console.error("Error fetching assessment", error);
+      }
+    };
+    fetchAssessment();
+  }, [assessmentId]);
 
   const addQuestion = () => {
     setQuestions([
@@ -90,11 +76,11 @@ export default function CreateAssessmentModal({
   };
 
   const handleSubmit = async () => {
-    const assessmentData = { title, description, file, questions };
+    const assessmentData = { title, description, questions };
 
     try {
       const response = await fetch("http://127.0.0.1:5000/api/assessment/", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "authorization": `Bearer ${localStorage.getItem('token')}`
@@ -122,19 +108,9 @@ export default function CreateAssessmentModal({
       <div className="bg-white max-h-[90%] rounded-lg shadow-lg p-6 w-full max-w-3xl overflow-scroll">
         {/* Modal Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Create Assessment</h2>
+          <h2 className="text-xl font-bold">Edit Assessment</h2>
           <FaTimes className="text-gray-600 cursor-pointer" onClick={onClose} />
         </div>
-
-        {/* File Upload */}
-        <label className="block mb-2 font-semibold">
-          Upload File (Optional)
-        </label>
-        <input
-          type="file"
-          onChange={handleFileUpload}
-          className="w-full mb-4"
-        />
 
         {/* Title Input */}
         <label className="block mb-2 font-semibold">Title</label>
@@ -144,7 +120,6 @@ export default function CreateAssessmentModal({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter assessment title"
-          disabled={loading}
         />
 
         {/* Description Input */}
@@ -154,7 +129,6 @@ export default function CreateAssessmentModal({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Enter assessment description"
-          disabled={loading}
         ></textarea>
 
         {/* Questions Section */}
@@ -171,7 +145,6 @@ export default function CreateAssessmentModal({
                 handleQuestionChange(index, "title", e.target.value)
               }
               placeholder="Enter question title"
-              disabled={loading}
             />
 
             {/* Options */}
@@ -189,7 +162,6 @@ export default function CreateAssessmentModal({
                     )
                   }
                   placeholder={`Option ${optIndex + 1}`}
-                  disabled={loading}
                 />
                 <input
                   type="radio"
@@ -198,7 +170,6 @@ export default function CreateAssessmentModal({
                   onChange={() =>
                     handleQuestionChange(index, "correctOption", optIndex)
                   }
-                  disabled={loading}
                 />
               </div>
             ))}
@@ -207,7 +178,6 @@ export default function CreateAssessmentModal({
             <button
               onClick={() => removeQuestion(index)}
               className="text-red-600 flex items-center mt-2 hover:underline"
-              disabled={loading}
             >
               <FaTrash className="mr-2" /> Remove Question
             </button>

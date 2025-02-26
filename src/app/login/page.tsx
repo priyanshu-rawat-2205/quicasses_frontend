@@ -1,52 +1,58 @@
 'use client'
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
-            email:"",
-            password:""
-        })
+        email:"",
+        password:""
+      })
     
-        const [loading, setLoading] = useState(false)
-        const [error, setError] = useState('')
-        const [success, setSuccess] = useState('')
-    
-        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            setFormData({...formData, [e.target.name]: e.target.value})
-        }
-    
-        const handleSubmit = async (e: React.FormEvent) => {
-            e.preventDefault()
-            setLoading(true)
-            setError('')
-            setSuccess('')
-    
-            try {
-                const response =  await fetch('http://127.0.0.1:5000/api/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                })
-    
-                const result = await response.json()
-    
-                if(!response.ok){
-                    throw new Error(result.msg || 'Login Failed')
-                }
-    
-                setSuccess('Login Successful')
-                setFormData({email:"", password:""})
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } catch (err: any) {
-                setError(err.message)
-            } finally {
-                setLoading(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
+    const router = useRouter()
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({...formData, [e.target.name]: e.target.value})
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+        setError('')
+        setSuccess('')
+
+        try {
+            const response =  await fetch('http://127.0.0.1:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+
+            const result = await response.json()
+            
+            if(!response.ok){
+              throw new Error(result.msg || 'Login Failed')
             }
+
+            const token = result.access_token
+            localStorage.setItem('token', token)
+
+            setSuccess('Login Successful')
+            setFormData({email:"", password:""})
+            router.push('/dashboard/admin')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (err: any) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
         }
+    }
 
     return (
       <div className="flex items-center justify-center min-h-screen bg-white">
