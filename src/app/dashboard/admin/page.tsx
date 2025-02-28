@@ -169,7 +169,14 @@ export default function AdminPage() {
               className="flex items-center justify-between bg-gray-100 rounded-lg shadow-md p-4 mb-3"
             >
               <div>
-                <h3 className="text-lg font-semibold">{assessment.title}</h3>
+                <h3
+                  onClick={() => {
+                    router.replace(`/assessment/${assessment.uuid}`);
+                  }}
+                  className="text-lg font-semibold cursor-pointer hover:underline"
+                >
+                  {assessment.title}
+                </h3>
                 {/* <p className="text-sm text-gray-600">
                 {assessment.questions} questions
               </p> */}
@@ -189,14 +196,17 @@ export default function AdminPage() {
                 >
                   <FaTrash className="text-black cursor-pointer hover:scale-110 transition" />
                 </button>
-                <FaEllipsisV className="text-gray-600 cursor-pointer hover:scale-110 transition" />
+
+                <button onClick={() => router.push(`/assessment/result/${assessment.uuid}`)}>
+                  <FaEllipsisV className="text-gray-600 cursor-pointer hover:scale-110 transition" />
+                </button>
               </div>
-                  <EditAssessmentModal
-                    isOpen={showEditModal}
-                    onClose={() => setShowEditModal(false)}
-                    onSubmit={() => console.log('Assessment Edited')}
-                    assessmentId={assessment.uuid}
-                  />
+              <EditAssessmentModal
+                isOpen={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                onSubmit={() => console.log("Assessment Edited")}
+                assessmentId={assessment.uuid}
+              />
             </div>
           ))
         )}

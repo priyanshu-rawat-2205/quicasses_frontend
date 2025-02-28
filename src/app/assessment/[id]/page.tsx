@@ -25,9 +25,13 @@ const TakeAssessment = () => {
     // Fetch the assessment details
     const fetchAssessment = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/assessments/${id}`
-        );
+        const response = await fetch(`http://127.0.0.1:5000/api/assessment/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "authorization": `Bearer ${localStorage.getItem('token')}`
+          }
+        });
         const data = await response.json();
         setAssessment(data);
       } catch (error) {
@@ -39,6 +43,8 @@ const TakeAssessment = () => {
 
     if (id) {
       fetchAssessment();
+    } else {
+      console.log("Assessment ID not found");
     }
   }, [id]);
 
@@ -53,16 +59,17 @@ const TakeAssessment = () => {
   // Submit the answers
   const handleSubmit = async () => {
     const payload = {
-      assessmentId: id,
-      answers,
+      uuid: id,
+      answers: answers,
     };
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/submit-assessment",
+        "http://127.0.0.1:5000/api/assessment/submit-assessment",
         {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
@@ -71,7 +78,7 @@ const TakeAssessment = () => {
 
       if (response.ok) {
         alert("Assessment submitted successfully!");
-        router.push("/dashboard"); // Redirect to the dashboard after submission
+        router.push("/dashboard/admin"); // Redirect to the dashboard after submission
       } else {
         console.error("Failed to submit assessment");
       }
@@ -85,7 +92,7 @@ const TakeAssessment = () => {
 
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4">{assessment.title}</h2>
+      <h2 className="text-2xl text-center font-bold mb-8">{assessment.title}</h2>
       <p className="text-gray-600 mb-6">{assessment.description}</p>
 
       {assessment.questions.map((question, qIndex) => (

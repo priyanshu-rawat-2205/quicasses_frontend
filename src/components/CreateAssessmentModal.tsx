@@ -21,7 +21,7 @@ export default function CreateAssessmentModal({
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [questions, setQuestions] = useState([
-    { title: "", options: ["", "", "", ""], correctOption: 0 },
+    { title: "", options: ["", "", "", ""], correct_option: 0 },
   ]);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +65,7 @@ export default function CreateAssessmentModal({
   const addQuestion = () => {
     setQuestions([
       ...questions,
-      { title: "", options: ["", "", "", ""], correctOption: 0 },
+      { title: "", options: ["", "", "", ""], correct_option: 0 },
     ]);
   };
 
@@ -81,8 +81,8 @@ export default function CreateAssessmentModal({
     const newQuestions = [...questions];
     if (field === "title") {
       newQuestions[index].title = value as string;
-    } else if (field === "correctOption") {
-      newQuestions[index].correctOption = value as number;
+    } else if (field === "correct_option") {
+      newQuestions[index].correct_option = value as number;
     } else {
       newQuestions[index].options[Number(field)] = value as string;
     }
@@ -194,9 +194,9 @@ export default function CreateAssessmentModal({
                 <input
                   type="radio"
                   name={`correct-${index}`}
-                  checked={q.correctOption === optIndex}
+                  checked={q.correct_option === optIndex}
                   onChange={() =>
-                    handleQuestionChange(index, "correctOption", optIndex)
+                    handleQuestionChange(index, "correct_option", optIndex)
                   }
                   disabled={loading}
                 />
