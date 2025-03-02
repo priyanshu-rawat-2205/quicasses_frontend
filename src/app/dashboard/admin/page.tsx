@@ -260,7 +260,6 @@ import {
   FaSearch,
   FaPlus,
   FaTrash,
-  FaEdit,
   FaSignOutAlt,
   FaShareAlt,
   FaChartBar,
@@ -268,6 +267,8 @@ import {
 } from "react-icons/fa";
 import CreateAssessmentModal from "@/components/CreateAssessmentModal";
 import EditAssessmentModal from "@/components/EditAssessmentModal";
+import { useAuthGuard } from "@/hooks/useAuth";
+
 
 interface Questions {
   title: string;
@@ -284,6 +285,9 @@ interface Assessment {
 }
 
 export default function AdminPage() {
+
+  useAuthGuard(true);
+
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -296,10 +300,10 @@ export default function AdminPage() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
+    // if (!token) {
+    //   router.push("/login");
+    //   return;
+    // }
 
     const fetchAssessments = async () => {
       try {
@@ -309,6 +313,7 @@ export default function AdminPage() {
         if (!response.ok) throw new Error("Failed to fetch assessments");
         const data = await response.json();
         setAssessments(Array.isArray(data) ? data : []);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(err.message);
       } finally {

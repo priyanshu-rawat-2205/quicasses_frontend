@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuthGuard } from "@/hooks/useAuth";
 
 const LoginPage = () => {
+    useAuthGuard(false)
     const [formData, setFormData] = useState({
         email:"",
         password:""

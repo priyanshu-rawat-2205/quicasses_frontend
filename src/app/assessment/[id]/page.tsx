@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
+import { useAuthGuard } from "@/hooks/useAuth";
 
 interface Assessment {
   uuid: string;
@@ -14,6 +15,7 @@ interface Assessment {
 }
 
 const TakeAssessment = () => {
+  useAuthGuard(true); // Redirect to login if user is not authenticated
   const router = useRouter();
   const { id } = useParams(); // Get the assessment ID from the URL
 

@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useAuthGuard } from "@/hooks/useAuth"
 
 const RegisterPage = () => {
+    useAuthGuard(false)
     const [formData, setFormData] = useState({
         email:"",
         username:"",

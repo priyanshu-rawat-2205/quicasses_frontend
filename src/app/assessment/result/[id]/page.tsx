@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuthGuard } from "@/hooks/useAuth";
 
 interface AssessmentResult {
   assessment_uuid: string;
@@ -28,6 +29,7 @@ interface AssessmentResult {
 }
 
 export default function AssessmentResults() {
+  useAuthGuard(true); // Redirect to login if user is not authenticated
   const { id } = useParams(); // Get assessment UUID from the route
   const router = useRouter();
   const [results, setResults] = useState<AssessmentResult[]>([]);

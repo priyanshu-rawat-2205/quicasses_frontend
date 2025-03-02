@@ -3,17 +3,12 @@
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuthGuard } from "@/hooks/useAuth";
 // import { useEffect } from "react";
 // import { useRouter } from "next/navigation";
 
 export default function Home() {
-  // const router = useRouter();
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     router.push("/dashboard/admin");
-  //   }
-  // }, [router]);
+  useAuthGuard(false);
   return (
     <div>
       <Navbar />
