@@ -240,18 +240,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaTimes, FaPlus, FaTrash } from "react-icons/fa";
+import { FaPlus, FaTrash } from "react-icons/fa";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+
 
 interface Question {
   title: string;
@@ -350,24 +353,28 @@ export default function EditAssessmentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[75%] overflow-scroll">
+      <DialogContent className="max-w-xl max-h-[85%] overflow-scroll">
         <DialogHeader>
           <DialogTitle>Edit Assessment</DialogTitle>
         </DialogHeader>
 
+        <Label>Title</Label>
         <Input
           placeholder="Enter assessment title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+
+        <Label>Description</Label>
         <Textarea
           placeholder="Enter assessment description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
 
+        <Label>Questions</Label>
         {questions.map((q, index) => (
-          <Card key={index} className="p-4">
+          <Card key={index} className="p-4 rounded-lg bg-gray-100">
             <Input
               placeholder="Question Title"
               value={q.title}
@@ -412,9 +419,15 @@ export default function EditAssessmentModal({
           <FaPlus className="mr-2" /> Add Question
         </Button>
 
-        <Button onClick={handleSubmit} className="mt-4 w-full">
-          Update Assessment
-        </Button>
+        <DialogFooter>
+            <Button variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+          <Button onClick={handleSubmit}>
+            Update Assessment
+          </Button>
+        </DialogFooter>
+
       </DialogContent>
     </Dialog>
   );

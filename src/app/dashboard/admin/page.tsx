@@ -349,6 +349,10 @@ export default function AdminPage() {
     setShowEditModal(false); // Close modal after updating
   };
 
+  const handleNewAssessment = (newAssessment: Assessment) => {
+    setAssessments((prevAssessments) => [...prevAssessments, newAssessment]);
+  };
+
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -401,7 +405,7 @@ export default function AdminPage() {
       <CreateAssessmentModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onSubmit={() => {}}
+        onSubmit={handleNewAssessment}
       />
 
 
