@@ -38,7 +38,7 @@ export default function CreateAssessmentModal({
         formData.append("file", selectedFile);
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/file-upload/upload', {
+            const response = await fetch('http://127.0.0.1:5000/api/file-upload/', {
                 method: 'POST',
                 body: formData,
             })
@@ -50,7 +50,7 @@ export default function CreateAssessmentModal({
             const data = await response.json()
             setTitle(data.title || '')
             setDescription(data.description || '')
-            setQuestions(data.question || [])
+            setQuestions(data.questions || [])
         } catch(error) {
             console.error('error uploading file', error);
         } finally {
