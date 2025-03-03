@@ -25,11 +25,11 @@ WORKDIR /app
 # Copy the built application from the builder stage
 COPY --from=builder /app ./
 
-# Install serve to serve the built application
-RUN npm install -g serve
+# Install production dependencies
+RUN npm install --production
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Command to run the application
-CMD ["serve", "-s", "out"]
+CMD ["npm", "run", "start"]
