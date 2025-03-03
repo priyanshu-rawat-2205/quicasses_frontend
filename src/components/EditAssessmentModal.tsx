@@ -268,6 +268,7 @@ interface Assessment {
   description: string;
   created_at: string;
   questions: Question[];
+  time_limit: number;
 }
 
 interface EditAssessmentModalProps {
@@ -286,12 +287,14 @@ export default function EditAssessmentModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [timeLimit, setTimeLimit] = useState(0);
 
   useEffect(() => {
     if (isOpen && assessment) {
       setTitle(assessment.title);
       setDescription(assessment.description);
       setQuestions(assessment.questions);
+      setTimeLimit(assessment.time_limit/60);
     }
   }, [isOpen, assessment]);
 
@@ -329,6 +332,7 @@ export default function EditAssessmentModal({
       title,
       description,
       questions,
+      time_limit: timeLimit * 60,
     };
     try {
       const response = await fetch(
@@ -353,7 +357,7 @@ export default function EditAssessmentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl max-h-[85%] overflow-scroll">
+      <DialogContent className="max-w-xl max-h-[85%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Edit Assessment</DialogTitle>
         </DialogHeader>
@@ -370,6 +374,14 @@ export default function EditAssessmentModal({
           placeholder="Enter assessment description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+        />
+
+        <Label>Time Limit (minutes)</Label>
+        <Input
+          type="number"
+          placeholder="Enter time limit in minutes"
+          value={timeLimit}
+          onChange={(e) => setTimeLimit(Number(e.target.value))}
         />
 
         <Label>Questions</Label>
@@ -420,15 +432,18 @@ export default function EditAssessmentModal({
         </Button>
 
         <DialogFooter>
-            <Button variant="secondary" onClick={onClose}>
-              Cancel
-            </Button>
-          <Button onClick={handleSubmit}>
-            Update Assessment
+          <Button variant="secondary" onClick={onClose}>
+            Cancel
           </Button>
+          <Button onClick={handleSubmit}>Update Assessment</Button>
         </DialogFooter>
-
       </DialogContent>
     </Dialog>
   );
 }
+
+
+
+
+
+

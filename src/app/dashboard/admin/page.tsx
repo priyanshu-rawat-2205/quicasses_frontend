@@ -282,6 +282,7 @@ interface Assessment {
   description: string;
   questions: Questions[];
   created_at: string;
+  time_limit: number;
 }
 
 export default function AdminPage() {
@@ -443,7 +444,8 @@ export default function AdminPage() {
                     className="text-green-500 cursor-pointer"
                     onClick={() =>
                       navigator.clipboard.writeText(
-                        `${window.location.origin}/assessment/${assessment.uuid}`
+                        // `${window.location.origin}/assessment/${assessment.uuid}`
+                        assessment.uuid
                       )
                     }
                   />

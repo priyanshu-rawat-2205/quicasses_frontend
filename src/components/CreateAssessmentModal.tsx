@@ -286,6 +286,7 @@ export default function CreateAssessmentModal({
   const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [timeLimit, setTimeLimit] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState([
@@ -328,7 +329,7 @@ export default function CreateAssessmentModal({
   };
 
   const handleSubmit = async () => {
-    const assessmentData = { title, description, file, questions };
+    const assessmentData = { title, description, file, questions, time_limit: timeLimit ? parseInt(timeLimit, 10) * 60 : null, };
 
     try {
       const response = await fetch("http://127.0.0.1:5000/api/assessment/", {
@@ -360,7 +361,7 @@ export default function CreateAssessmentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-[85%] min-h-[85%] overflow-scroll">
+      <DialogContent className="max-h-[85%] min-h-[85%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Create Assessment</DialogTitle>
         </DialogHeader>
@@ -370,7 +371,7 @@ export default function CreateAssessmentModal({
             <Loader2 className="animate-spin h-8 w-8 text-gray-600" />
           </div>
         ) : (
-          <div>
+          <div className="space-y-4">
             <Label>Upload File (Optional)</Label>
             <Input type="file" onChange={handleFileUpload} disabled={loading} />
 
@@ -388,6 +389,15 @@ export default function CreateAssessmentModal({
               placeholder="Enter assessment description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              disabled={loading}
+            />
+
+            <Label>Time Limit (Minutes)</Label>
+            <Input
+              placeholder="Enter time limit in minutes"
+              type="number"
+              value={timeLimit}
+              onChange={(e) => setTimeLimit(e.target.value)}
               disabled={loading}
             />
 
@@ -476,3 +486,9 @@ export default function CreateAssessmentModal({
     </Dialog>
   );
 }
+
+
+
+
+
+
