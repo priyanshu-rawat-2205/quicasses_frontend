@@ -1,42 +1,42 @@
-'use client'
+"use client";
 
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useAuthGuard } from "@/hooks/useAuth";
-// import { useEffect } from "react";
-// import { useRouter } from "next/navigation";
 
 export default function Home() {
   useAuthGuard(false);
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex flex-col md:flex-row items-center justify-between px-8 md:px-16 lg:px-24 py-16">
+      <div className="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 lg:px-24 py-20 gap-10">
         {/* Left Content */}
-        <div className="text-center md:text-left max-w-xl">
-          <h1 className="text-6xl font-extrabold text-gray-900 leading-tight">
-            Create. Assess. Improve.
-          </h1>
-          <p className="mt-4 text-gray-600 text-lg">
-            The Fastest Way to Test & Learn!
-          </p>
-          <Link href={'/sign-up'}>
-            <div className="mt-6">
-              <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
-                Sign up
-              </button>
-            </div>
-          </Link>
-        </div>
+        <Card className="max-w-xl p-6 shadow-lg">
+          <CardContent>
+            <h1 className="text-5xl font-bold text-gray-900 leading-tight">
+              Create. Assess. Improve.
+            </h1>
+            <p className="mt-4 text-gray-600 text-lg">
+              The Fastest Way to Test & Learn!
+            </p>
+            <Link href="/sign-up">
+              <Button className="mt-6 w-full md:w-auto px-6 py-3 text-lg">
+                Sign Up
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
 
         {/* Right Illustration */}
-        <div className="mt-10 md:mt-0">
+        <div className="relative w-80 h-80 md:w-96 md:h-96">
           <Image
             src="/hero-img.png"
             alt="Illustration"
-            width={400}
-            height={400}
+            layout="fill"
+            objectFit="contain"
           />
         </div>
       </div>
