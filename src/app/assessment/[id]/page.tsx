@@ -437,6 +437,7 @@ const TakeAssessment = () => {
     } else if (timeLeft === 0) {
       handleSubmit();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
   const handleSelectAnswer = (questionIndex: number, optionIndex: number) => {

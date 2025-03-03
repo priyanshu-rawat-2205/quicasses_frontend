@@ -268,7 +268,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { FaPlus, FaTrash } from "react-icons/fa";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
 interface CreateAssessmentModalProps {
@@ -283,7 +283,7 @@ export default function CreateAssessmentModal({
   onClose,
   onSubmit,
 }: CreateAssessmentModalProps) {
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [timeLimit, setTimeLimit] = useState("");
@@ -316,12 +316,9 @@ export default function CreateAssessmentModal({
         setTitle(data.title || "");
         setDescription(data.description || "");
         setQuestions(data.questions || []);
-      } catch (error) {
-        toast({
-          title: error,
-          description: "File upload failed",
-          variant: "destructive",
-        });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        throw new Error("Error saving assessment", error);
       } finally {
         setLoading(false);
       }
@@ -346,16 +343,9 @@ export default function CreateAssessmentModal({
 
       onSubmit(responseData);
       onClose();
-      toast({
-        title: "Success",
-        description: "Assessment created successfully",
-      });
-    } catch (error) {
-      toast({
-        title: error,
-        description: "Failed to create assessment",
-        variant: "destructive",
-      });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      throw new Error("Error saving assessment", error);
     }
   };
 
