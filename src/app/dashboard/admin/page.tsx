@@ -268,6 +268,7 @@ import {
 import CreateAssessmentModal from "@/components/CreateAssessmentModal";
 import EditAssessmentModal from "@/components/EditAssessmentModal";
 import { useAuthGuard } from "@/hooks/useAuth";
+import { API_URL } from "@/shared/api";
 
 
 interface Questions {
@@ -308,7 +309,7 @@ export default function AdminPage() {
 
     const fetchAssessments = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/assessment/", {
+        const response = await fetch(`${API_URL}/api/assessment/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!response.ok) throw new Error("Failed to fetch assessments");
@@ -329,7 +330,7 @@ export default function AdminPage() {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      await fetch(`http://127.0.0.1:5000/api/assessment/${uuid}`, {
+      await fetch(`${API_URL}/api/assessment/${uuid}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

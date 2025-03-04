@@ -270,6 +270,7 @@ import { Label } from "@/components/ui/label";
 import { FaPlus, FaTrash } from "react-icons/fa";
 // import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { API_URL } from "@/shared/api";
 
 interface CreateAssessmentModalProps {
   isOpen: boolean;
@@ -305,7 +306,7 @@ export default function CreateAssessmentModal({
       formData.append("file", selectedFile);
 
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/file-upload/", {
+        const response = await fetch(`${API_URL}/api/file-upload/`, {
           method: "POST",
           body: formData,
         });
@@ -329,7 +330,7 @@ export default function CreateAssessmentModal({
     const assessmentData = { title, description, file, questions, time_limit: timeLimit ? parseInt(timeLimit, 10) * 60 : null, };
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/assessment/", {
+      const response = await fetch(`${API_URL}/api/assessment/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

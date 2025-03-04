@@ -375,6 +375,7 @@ import {
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2 } from "lucide-react";
+import { API_URL } from "@/shared/api";
 
 interface Assessment {
   uuid: string;
@@ -466,7 +467,7 @@ const TakeAssessment = () => {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:5000/api/assessment/submit-assessment",
+        `${API_URL}/api/assessment/submit-assessment`,
         {
           method: "POST",
           headers: {

@@ -15,6 +15,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthGuard } from "@/hooks/useAuth";
+import { API_URL } from "@/shared/api";
 
 interface AssessmentResult {
   assessment_uuid: string;
@@ -43,7 +44,7 @@ export default function AssessmentResults() {
       try {
         const token = localStorage.getItem("token"); // Assuming JWT is stored in localStorage
         const res = await fetch(
-          `http://127.0.0.1:5000/api/assessment/results/${id}`,
+          `${API_URL}/api/assessment/results/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

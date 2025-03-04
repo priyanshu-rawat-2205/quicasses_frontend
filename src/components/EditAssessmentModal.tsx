@@ -254,6 +254,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { API_URL } from "@/shared/api";
 
 
 interface Question {
@@ -336,7 +337,7 @@ export default function EditAssessmentModal({
     };
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/api/assessment/${assessment.uuid}`,
+        `${API_URL}/api/assessment/${assessment.uuid}`,
         {
           method: "PUT",
           headers: {
