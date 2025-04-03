@@ -200,6 +200,10 @@ const TakeAssessment = () => {
       {/* Right side - Progress and Navigation */}
       <div className="w-1/3">
         <Card className="p-4 mb-4">
+          <p>username</p>
+          <p>user uuid</p>
+        </Card>
+        <Card className="p-4 mb-4">
           <Alert className="mb-4">
             <AlertDescription>
               Time left: {Math.floor(timeLeft! / 60)}:
